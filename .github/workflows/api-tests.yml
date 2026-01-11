@@ -1,11 +1,11 @@
-name: API Automation Pipeline
+name: API Tests
 
 on:
   push:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  test:
+  run-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,4 +19,6 @@ jobs:
           java-version: '17'
 
       - name: Run Tests
+        env:
+          BASE_URL: https://springboot-api-database-framework-1.onrender.com
         run: mvn clean test
