@@ -2,6 +2,7 @@ name: API Tests
 
 on:
   push:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -18,7 +19,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Run Tests
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: maven-
+
+      - name: Run API Tests
         env:
           BASE_URL: https://springboot-api-database-framework-1.onrender.com
-        run: mvn clean test
+        run: mvn clean test -B
